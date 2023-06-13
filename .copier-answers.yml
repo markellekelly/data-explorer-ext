@@ -1,0 +1,14 @@
+# Changes here will be overwritten by Copier; NEVER EDIT MANUALLY
+_commit: v4.0.5
+_src_path: https://github.com/jupyterlab/extension-template
+author_email: markellekelly@gmail.com
+author_name: Markelle Kelly
+has_binder: true
+has_settings: false
+kind: frontend
+labextension_name: data-explorer
+project_short_description: A JupyterLab extension for data exploration.
+python_name: data_explorer
+repository: https://github.com/markellekelly/data-explorer-ext
+test: true
+
