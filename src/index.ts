@@ -11,12 +11,11 @@ import { Widget } from '@lumino/widgets';
  * Initialization data for the jupyterlab_apod extension.
  */
 const plugin: JupyterFrontEndPlugin<void> = {
-  id: 'jupyterlab-apod',
-  description: 'Show a random NASA Astronomy Picture of the Day in a JupyterLab panel.',
+  id: 'jupyterlab-dataexp',
+  description: 'Show a data explorer in the JupyterLab sidebar.',
   autoStart: true,
   requires: [ICommandPalette],
   activate: (app: JupyterFrontEnd, palette: ICommandPalette) => {
-    console.log('JupyterLab extension jupyterlab_apod is activated!');
 
     // Define a widget creator function,
     // then call it to make a new widget
@@ -24,17 +23,17 @@ const plugin: JupyterFrontEndPlugin<void> = {
       // Create a blank content widget inside of a MainAreaWidget
       const content = new Widget();
       const widget = new MainAreaWidget({ content });
-      widget.id = 'apod-jupyterlab';
-      widget.title.label = 'Astronomy Picture';
+      widget.id = 'dataexp-jupyterlab';
+      widget.title.label = 'Data Explorer';
       widget.title.closable = true;
       return widget;
     }
     let widget = newWidget();
 
     // Add an application command
-    const command: string = 'apod:open';
+    const command: string = 'dataexp:open';
     app.commands.addCommand(command, {
-      label: 'Random Astronomy Picture',
+      label: 'Open Data Explorer',
       execute: () => {
         // Regenerate the widget if disposed
         if (widget.isDisposed) {
