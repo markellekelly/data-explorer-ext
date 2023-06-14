@@ -3,54 +3,25 @@ import {
   JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
-import { ICommandPalette, MainAreaWidget } from '@jupyterlab/apputils';
-
-import { Widget } from '@lumino/widgets';
+import { INotebookTracker } from '@jupyterlab/notebook';
+import { DataExplorerPanel } from './DataExplorerPanel';
 
 /**
- * Initialization data for the jupyterlab_apod extension.
- */
+* Initialization data for the Data Explorer extension.
+*/
 const plugin: JupyterFrontEndPlugin<void> = {
-  id: 'jupyterlab-dataexp',
-  description: 'Show a data explorer in the JupyterLab sidebar.',
+  id: 'DataExplorer:plugin',
   autoStart: true,
-  requires: [ICommandPalette],
-  activate: (app: JupyterFrontEnd, palette: ICommandPalette) => {
+  activate: (app: JupyterFrontEnd, notebookTracker: INotebookTracker) => {
+      const panel: DataExplorerPanel = new DataExplorerPanel();
+      app.shell.add(panel, 'right', { rank: 1000 });
 
-    // Define a widget creator function,
-    // then call it to make a new widget
-    const newWidget = () => {
-      // Create a blank content widget inside of a MainAreaWidget
-      const content = new Widget();
-      const widget = new MainAreaWidget({ content });
-      widget.id = 'dataexp-jupyterlab';
-      widget.title.label = 'Data Explorer';
-      widget.title.closable = true;
-      return widget;
-    }
-    let widget = newWidget();
-
-    // Add an application command
-    const command: string = 'dataexp:open';
-    app.commands.addCommand(command, {
-      label: 'Open Data Explorer',
-      execute: () => {
-        // Regenerate the widget if disposed
-        if (widget.isDisposed) {
-          widget = newWidget();
-        }
-        if (!widget.isAttached) {
-          // Attach the widget to the main work area if it's not there
-          app.shell.add(widget, 'main');
-        }
-        // Activate the widget
-        app.shell.activateById(widget.id);
-      }
-    });
-
-    // Add the command to the palette.
-    palette.addItem({ command, category: 'Tutorial' });
-  }
+      // emitted when the user's notebook changes, null if all notebooks close
+      notebookTracker.currentChanged.connect((_, widget) => {
+          console.log(widget);
+      });
+  },
+  requires: [INotebookTracker]
 };
 
 export default plugin;
